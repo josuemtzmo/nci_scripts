@@ -14,14 +14,13 @@ General Options:
     -e:         Conda environment
 
 Queue Options:
-    -q QUEUE:     Queue name
-    -n NCPU:      Use NCPU cpus
-    -m MEM:       Memory allocation (default 4*NCPU GB)
-    -t TIME:      Walltime limit (default 1 hour)
-    -J JOBFS:     Jobfs allocation (default 100 GB)
-    -P PROJ:      Submit job under project PROJ
-    -R RECONNECT: Reconnect to existing job under project PROJ 
-                  (Boolean: default True)
+    -q QUEUE:       Queue name
+    -n NCPU:        Use NCPU cpus
+    -m MEM:         Memory allocation (default 4*NCPU GB)
+    -t TIME:        Walltime limit (default 1 hour)
+    -J JOBFS:       Jobfs allocation (default 100 GB)
+    -P PROJ:        Submit job under project PROJ
+    -N NEW Session: Create a new session.
 EOF
 }
 
@@ -40,7 +39,7 @@ CONDA_ENV=analysis3-20.01
 RECONNECT=True
 
 # Handle arguments
-optspec="hl:L:q:n:m:t:J:P:e:R:"
+optspec="hNl:L:q:n:m:t:J:P:e:"
 while getopts "$optspec" optchar; do
     case "${optchar}" in
         h)
@@ -49,6 +48,8 @@ while getopts "$optspec" optchar; do
             ;;
         l)
             USER="${OPTARG}"
+            ;;
+        N)  RECONNECT=False
             ;;
         L)
             LOGINNODE="${OPTARG}"
@@ -73,8 +74,6 @@ while getopts "$optspec" optchar; do
             ;;
         e)
             CONDA_ENV="${OPTARG}"
-            ;;
-	R)  RECONNECT="${OPTARG}"
             ;;
         *)
             print_help
